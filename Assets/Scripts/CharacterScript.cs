@@ -14,6 +14,7 @@ public class CharacterScript : MonoBehaviour
     public GameObject arrowPrefab;
     public Sprite full;
     public Sprite empty;
+    private Canvas deathPanel;
 
     public float speed = 12f;
     public static float shotPower = 0f;
@@ -22,10 +23,13 @@ public class CharacterScript : MonoBehaviour
     public int currentHearts = 3;
     public int immunityFrames = 0;
     private bool immune = false;
+    public bool dead = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        deathPanel = GameObject.FindGameObjectWithTag("Death Panel").GetComponent<Canvas>();
+        deathPanel.enabled = false;
         //Assign the variable body to the rigid body component attached to this game object
         body = GetComponent<Rigidbody2D>();
         //Hide cursor on start up
@@ -42,30 +46,32 @@ public class CharacterScript : MonoBehaviour
     void Update()
     {
         //Movement Logic Functions
-        CharacterMovement();
-        CrosshairMovement();
-        WeaponMovement();
+        if (!dead) {
+            CharacterMovement();
+            CrosshairMovement();
+            WeaponMovement();
+
+            //Shoot Function
+            if (Input.GetButton("Fire1"))
+            {
+                if (shotPower < 20f)
+                {
+                    shotPower = shotPower + 0.2f;
+                    powerBar.transform.localScale = new Vector3((shotPower / 20f), 1f, 1f);
+                }
+
+            }
+
+            if (Input.GetButtonUp("Fire1"))
+            {
+                powerBar.transform.localScale = new Vector3(0f, 1f, 1f);
+                Shoot();
+            }
+        }
 
         //Health UI Handler
         HeartDisplay();
         CheckImmunity();
-
-        //Shoot Function
-        if (Input.GetButton("Fire1"))
-        {
-            if (shotPower < 20f)
-            {
-                shotPower = shotPower + 0.1f;
-                powerBar.transform.localScale = new Vector3((shotPower/20f), 1f, 1f);
-            }
-            
-        }
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            powerBar.transform.localScale = new Vector3(0f, 1f, 1f);
-            Shoot();
-        }
     }
 
     //Move Character Based on player input
@@ -103,8 +109,7 @@ public class CharacterScript : MonoBehaviour
     {
             if (health <= 0)
             {
-                //Death();
-                //Debug.Log("You Died!");
+                Death();
             }
 
         if (!immune)
@@ -151,5 +156,12 @@ public class CharacterScript : MonoBehaviour
                 hearts[i].enabled = false;
             }
         }
+    }
+
+    private void Death()
+    {
+        dead = true;
+        Cursor.visible = true;
+        deathPanel.enabled = true;
     }
 }

@@ -257,9 +257,9 @@ MonoBehaviour:
   maxDmgDistance: 0.5
   healthBar: {fileID: 1583191068416659658}
   ui: {fileID: 3337528483871942558, guid: c19ee76c0abe7ea4981eab648f1520ca, type: 3}
-  speed: 2
+  speed: 0.8
   dmgDelay: 0
-  health: 20
+  health: 15
 --- !u!1 &6084270640800476206
 GameObject:
   m_ObjectHideFlags: 0

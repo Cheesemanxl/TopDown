@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slime: {fileID: 5929728630590462466, guid: bf3648db1815921489cdbd0b59e8aa8d, type: 3}
-  randF: 0
+  targetSpawn: 25

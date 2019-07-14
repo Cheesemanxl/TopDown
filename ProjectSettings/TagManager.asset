@@ -11,6 +11,7 @@ TagManager:
   - Heart3
   - Heart4
   - Heart5
+  - Death Panel
   layers:
   - Default
   - TransparentFX

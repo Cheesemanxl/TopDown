@@ -14,19 +14,21 @@ public class SlimeScript : MonoBehaviour
     public float speed = .05f;
     public int dmgDelay;
     public float health = 10f;
+    private float maxHealth = 0f;
 
 
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         CharacterScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterScript>();
+        maxHealth = health;
     }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
-        healthBar.transform.localScale = new Vector3((health / 20f), 1f, 1f);
+        healthBar.transform.localScale = new Vector3((health / maxHealth), 1f, 1f);
     }
 
     void Movement()
