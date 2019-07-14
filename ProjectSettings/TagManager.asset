@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - ScoreText
+  - Heart1
+  - Heart2
+  - Heart3
+  - Heart4
+  - Heart5
   layers:
   - Default
   - TransparentFX

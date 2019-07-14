@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class SlimeScript : MonoBehaviour
 {
-    public float speed;
-    public int dmgDelay;
     private int dmgDelayCounter;
     public float maxDmgDistance;
     private Transform target;
     private CharacterScript CharacterScript;
+
+    public GameObject healthBar;
+    public UIScript ui;
+    public float speed = .05f;
+    public int dmgDelay;
+    public float health = 10f;
+
 
     void Start()
     {
@@ -21,6 +26,7 @@ public class SlimeScript : MonoBehaviour
     void Update()
     {
         Movement();
+        healthBar.transform.localScale = new Vector3((health / 20f), 1f, 1f);
     }
 
     void Movement()
@@ -29,23 +35,30 @@ public class SlimeScript : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
-        else
+    }
+
+    public void TakeDmg (float dmg)
+    {
+        health = health - dmg;
+
+        if (health <= 0)
         {
-            DoDmg();
+            Death();
         }
     }
 
-    void DoDmg()
+    void Death()
     {
-        if (dmgDelayCounter <= dmgDelay)
+        ui.UpScore();
+        Destroy(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        CharacterScript player = col.GetComponent<CharacterScript>();
+        if (player != null)
         {
-            dmgDelayCounter++;
-        }
-        else
-        {
-            CharacterScript.health--;
-            Debug.Log(CharacterScript.health);
-            dmgDelayCounter = 0;
+            player.TakeDmg();
         }
     }
 }
