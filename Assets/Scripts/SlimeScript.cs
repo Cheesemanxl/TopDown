@@ -15,6 +15,7 @@ public class SlimeScript : MonoBehaviour
     public int dmgDelay;
     public float health = 10f;
     private float maxHealth = 0f;
+    private bool onScreen = false;
 
 
     void Start()
@@ -39,13 +40,15 @@ public class SlimeScript : MonoBehaviour
         }
     }
 
-    public void TakeDmg (float dmg)
+    public void TakeDmg(float dmg)
     {
-        health = health - dmg;
+        if (onScreen) { 
+            health = health - dmg;
 
-        if (health <= 0)
-        {
-            Death();
+            if (health <= 0)
+            {
+                Death();
+            }
         }
     }
 
@@ -62,6 +65,11 @@ public class SlimeScript : MonoBehaviour
         {
             player.TakeDmg();
         }
+    }
+    
+    void OnBecameVisible()
+    {
+        onScreen = true;
     }
 }
 

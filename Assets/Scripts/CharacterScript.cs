@@ -15,13 +15,14 @@ public class CharacterScript : MonoBehaviour
     public Sprite full;
     public Sprite empty;
     private Canvas deathPanel;
+    public Animator animator;
 
     public float speed = 12f;
     public static float shotPower = 0f;
 
     public int health = 5;
     public int currentHearts = 3;
-    public int immunityFrames = 0;
+    private int immunityFrames = 0;
     private bool immune = false;
     public bool dead = false;
 
@@ -54,7 +55,7 @@ public class CharacterScript : MonoBehaviour
             //Shoot Function
             if (Input.GetButton("Fire1"))
             {
-                if (shotPower < 20f)
+                if (shotPower <= 19.8f)
                 {
                     shotPower = shotPower + 0.2f;
                     powerBar.transform.localScale = new Vector3((shotPower / 20f), 1f, 1f);
@@ -79,6 +80,18 @@ public class CharacterScript : MonoBehaviour
     {
         Vector2 pos = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         body.MovePosition(new Vector2((transform.position.x + pos.x * speed * Time.deltaTime), transform.position.y + pos.y * speed * Time.deltaTime));
+
+        animator.SetFloat("Vertical", pos.y);
+        pos.x = Mathf.Abs(pos.x);
+        pos.y = Mathf.Abs(pos.y);
+
+        if (pos.x > 0 | pos.y > 0)
+        {
+            animator.SetFloat("Speed", 1f);
+        } else
+        {
+            animator.SetFloat("Speed", 0f);
+        }
     }
 
     //Places the crosshair where the mouse is located on screen
@@ -116,7 +129,7 @@ public class CharacterScript : MonoBehaviour
         {
             health = health - 1;
             immune = true;
-            immunityFrames = 70;
+            immunityFrames = 144;
         }
     }
 
