@@ -9,6 +9,7 @@ public class SlimeScript : MonoBehaviour
     private Transform target;
     private CharacterScript CharacterScript;
 
+    private CameraShakeScript cam;
     public GameObject healthBar;
     public UIScript ui;
     public float speed = .05f;
@@ -22,6 +23,7 @@ public class SlimeScript : MonoBehaviour
     {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         CharacterScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterScript>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShakeScript>();
         maxHealth = health;
     }
 

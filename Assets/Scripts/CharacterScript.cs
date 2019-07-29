@@ -16,19 +16,25 @@ public class CharacterScript : MonoBehaviour
     public Sprite empty;
     private Canvas deathPanel;
     public Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private CameraShakeScript cam;
 
     public float speed = 12f;
     public static float shotPower = 0f;
 
+    private int frameCount = 144;
     public int health = 5;
     public int currentHearts = 3;
     private int immunityFrames = 0;
     private bool immune = false;
     public bool dead = false;
+    private bool red = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShakeScript>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         deathPanel = GameObject.FindGameObjectWithTag("Death Panel").GetComponent<Canvas>();
         deathPanel.enabled = false;
         //Assign the variable body to the rigid body component attached to this game object
@@ -51,6 +57,7 @@ public class CharacterScript : MonoBehaviour
             CharacterMovement();
             CrosshairMovement();
             WeaponMovement();
+            FlashRed();
 
             //Shoot Function
             if (Input.GetButton("Fire1"))
@@ -127,11 +134,64 @@ public class CharacterScript : MonoBehaviour
 
         if (!immune)
         {
+            spriteRenderer.material.color = new Color32(255, 0, 0, 222);
+            cam.Shake(0.001f, 0.1f, 0.1f);
             health = health - 1;
             immune = true;
             immunityFrames = 144;
+            red = true;
+            
         }
     }
+    private void FlashRed()
+    {
+        if(red)
+        {
+
+            frameCount--;
+            if (frameCount == 126)
+            {
+                spriteRenderer.material.color = new Color32(255, 255, 255, 222);
+            }
+
+            if (frameCount == 108)
+            {
+                spriteRenderer.material.color = new Color32(255, 0, 0, 222);
+            }
+
+            if (frameCount == 90)
+            {
+                spriteRenderer.material.color = new Color32(255, 255, 255, 222);
+            }
+
+            if (frameCount == 72)
+            {
+                spriteRenderer.material.color = new Color32(255, 0, 0, 222);
+            }
+
+            if (frameCount ==54)
+            {
+                spriteRenderer.material.color = new Color32(255, 255, 255, 222);
+            }
+
+            if (frameCount == 36)
+            {
+                spriteRenderer.material.color = new Color32(255, 0, 0, 222);
+            }
+
+            if (frameCount == 18)
+            {
+                spriteRenderer.material.color = new Color32(255, 255, 255, 255);
+            }
+
+            if (frameCount == 0)
+            {
+                frameCount = 144;
+                red = false;
+            }
+        }
+    }
+
 
     private void CheckImmunity()
     {
@@ -176,5 +236,7 @@ public class CharacterScript : MonoBehaviour
         dead = true;
         Cursor.visible = true;
         deathPanel.enabled = true;
+        animator.SetFloat("Vertical", 0f);
+        animator.SetFloat("Speed", 0f);
     }
 }
