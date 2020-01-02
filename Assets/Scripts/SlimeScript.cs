@@ -34,6 +34,7 @@ public class SlimeScript : MonoBehaviour
         healthBar.transform.localScale = new Vector3((health / maxHealth), 1f, 1f);
     }
 
+    //if the slime is not VERY close to player move towards player
     void Movement()
     {
         if (Vector2.Distance(transform.position, target.position) > maxDmgDistance)
@@ -42,11 +43,16 @@ public class SlimeScript : MonoBehaviour
         }
     }
 
+    //damage taking logic
     public void TakeDmg(float dmg)
     {
+        //Determine whether the slime can be seen
         if (onScreen) { 
+
+            //hurt slime if so
             health = health - dmg;
 
+            //call the death function if slime life is less than or equal to 0
             if (health <= 0)
             {
                 Death();
@@ -54,14 +60,17 @@ public class SlimeScript : MonoBehaviour
         }
     }
 
+    //add one to the score and destroy this slime object
     void Death()
     {
         ui.UpScore();
         Destroy(gameObject);
     }
 
+    //called when overlapping a trigger collider
     void OnTriggerEnter2D(Collider2D col)
     {
+        //if the collider is attached to a player deal damage to the player
         CharacterScript player = col.GetComponent<CharacterScript>();
         if (player != null)
         {
@@ -69,6 +78,7 @@ public class SlimeScript : MonoBehaviour
         }
     }
     
+    //Called when the object is within the view of the camera object
     void OnBecameVisible()
     {
         onScreen = true;
